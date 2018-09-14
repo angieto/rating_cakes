@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/api_db', { useNewUrlParser: true }, errs => console.log(errs?errs:"running api db"));
+mongoose.connect('mongodb://localhost:27017/cake_db', { useNewUrlParser: true }, errs => console.log(errs?errs:"running api db"));
 
 const ReviewSchema = new mongoose.Schema({
-    rating: {type: Number, required: true},
+    rating: {type: Number, required: true, min: 0, max: 5},
     comment: {type: String, required: true, minlength: [3, "Comment too short"]}
 }, {timestamps: true});
 
