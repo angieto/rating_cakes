@@ -1,4 +1,4 @@
-const {Cake} = require('./model');
+const {Cake, Review} = require('./model');
 
 // export an obj that contains the logics
 module.exports = {
@@ -11,13 +11,16 @@ module.exports = {
     createCake: (req, res) => Cake.create(req.body)
                                   .then(newCake => console.log("Make a new cake", newCake) || res.json(newCake))
                                   .catch(errs => console.log("Fail to bake the cake", errs) || res.json(errs)),
-    updateCake: (req, res) => Cake.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
-                                  .then(updatedCake => console.log("Cake updated", updatedCake) || res.json(updatedCake))
-                                  .catch(errs => console.log("Fail to update cake", errs) || res.json(errs)),
     deleteCake: (req, res) => Cake.findByIdAndRemove(req.params.id)
                                   .then(deletedCake => console.log("The cake is deleted!", deletedCake) || res.json(deletedCake))
                                   .catch(errs => console.log("Fail to delete cake", errs) || res.json(errs)),
-    addReview: (req, res) => Cake.findByIdAndUpdate(req.params.id, { $push: {review: req.body} })
-                                 .then(review => console.log("You add a review!", review) || res.json(review))
-                                 .catch(errs => console.log("Fail to add the review", errs) || res.json(errs))
+    reviewCake: (req, res) => {Review.create(req.body).then(review => {
+                                //   console.log("Review is created at the backend", review) || res.json(review),
+                                  Cake.findByIdAndUpdate(req.params.id, { $push: {review: req.body} })
+                                    .then(review => console.log("You add a review!", review) || res.json(review))
+                                    .catch(errs => console.log("Fail to add the review", errs) || res.json(errs)),
+                                  console.log("Review is created at the backend", review) || res.json(review)
+                                })
+                                .catch(errs => console.log("Erros at the backend", errs) || res.json(errs))}
+
 }

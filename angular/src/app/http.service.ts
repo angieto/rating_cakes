@@ -11,14 +11,21 @@ export class HttpService {
 
     // these functions will return an observable 
     showCakes() {
-        return this._http.get('/cakes');
+        return this._http.get('/api/cakes');
     }
+
+    getCake(id) {
+        return this._http.get('/api/cakes/'+id)
+    }
+
     createCake(newCake) {
-        return this._http.post('/cakes', newCake);
+        return this._http.post('/api/cakes', newCake);
     }
-    updateCake() {
-        
+    
+    reviewCake(cakeId, review) {
+        return this._http.post('/api/review/'+ cakeId, review);
     }
+
 }
 
 

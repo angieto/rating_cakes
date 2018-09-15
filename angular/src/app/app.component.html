@@ -1,3 +1,44 @@
+<main class="container p-3">
+    <h2>Rate My Cakes</h2>
+    <hr>
+    <!-- Display errors -->
+    <ng-container *ngIf="createCakeErrors">
+        <p *ngIf="createCakeErrors['baker']" class="text-danger text-center">{{ createCakeErrors['baker']['message'] }}</p>
+        <p *ngIf="createCakeErrors['url']" class="text-danger text-center">{{ createCakeErrors['url']['message'] }}</p>
+    </ng-container> 
 
+    <div class="container-fluid row mt-3">
+        <!-- Display making-cake form -->
+        <div class="container col-5 mt-3">
+            <form class="form-group" (submit)="createCake()">
+                <input class="form-control" type="text" placeholder="Baker" name="baker" [(ngModel)]="newCake.baker">
+                <input class="form-control" type="text" placeholder="Cake image url" name="url" [(ngModel)]="newCake.url">
+                <input class="form-control bg-primary text-white" type="submit" value="Submit Cake">
+            </form> 
+        </div>
+        <!-- Display cakes -->
+        <div *ngFor="let cake of cakes" class="container col-5 mt-3 mx-auto">
+            <img src="{{ cake.url }}" class="container col-10" (click)="getCake(cake._id)">
+            <form>
+                <input class="form-control col-10"  type="number" min="0" max="5" placeholder="Rate (0-5)" name="rating" [(ngModel)]="cake.rating">
+                <input class="form-control col-10"  type="text" placeholder="Comment" name="comment" [(ngModel)]="cake.comment">
+                <input class="form-control bg-primary text-white col-10" type="submit" value="Rate!">
+            </form>
+        </div>
+    </div>
+    <!-- Display selected cake information -->
+    <div class="container mt-5">
+        <h3>Baked By {{ selectedCake.baker }}</h3>
+        <img src="{{ selectedCake.url }}">
+        <!-- Display update form -->
+        <p *ngIf="selectedCake">Average Rating: {{ selectedCakeAverage }}</p>
+        <p *ngFor="let x of selectedCake.review">Comment: {{ x['comment'] }}</p>
+        <form *ngIf="selectedCake" (submit)="reviewCake(selectedCake._id)">
+            <input class="form-control col-10"  type="number" min="0" max="5" placeholder="Rating" name="rating" [(ngModel)]="selectedReview.rating">
+            <input class="form-control col-10"  type="text" placeholder="Comment" name="comment" [(ngModel)]="selectedReview.comment">
+            <input class="form-control bg-primary text-white col-10" type="submit" value="Rate!">
+        </form>
+    </div>
+</main>
 
 
